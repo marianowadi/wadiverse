@@ -1,5 +1,7 @@
 export type ViewPortSize = { height: number; width: number }
 
+export type ChaosValues = 250 | 1000 | 1750
+
 export type TPlanet = {
   key: string
   baseColor: string

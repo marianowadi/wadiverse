@@ -3,16 +3,18 @@ import { motion, useAnimate } from 'framer-motion'
 import { PlanetComponent as PlanetComponent } from './Planet'
 import Ship from 'assets/trace.svg'
 import { planetGenerator } from 'utils'
-import { TPlanet, ViewPortSize } from './types'
+import { ChaosValues, TPlanet, ViewPortSize } from './types'
 import { COLORS } from 'constants/index'
 import { PlanetContent } from './Content'
 import CloseIcon from 'assets/close.svg'
+import { Chaos } from './Chaos'
 
 function App() {
   const [scope, animate] = useAnimate()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [planets, setPlanets] = useState<Array<TPlanet>>([])
   const [stars, setStars] = useState<Array<JSX.Element>>([])
+  const [chaos, setChaos] = useState<ChaosValues>(250)
   const [selectedPlanet, setSelectedPlanet] = useState<null | string>(null)
   const [shipCoordinates, setShipCoordinates] = useState([0, 0])
   const [destinationCoordinates, setDestinationCoordinates] = useState([0, 0])
@@ -47,7 +49,7 @@ function App() {
 
   useEffect(() => {
     setStars(
-      [...Array(250)].map((x, y) => (
+      [...Array(chaos)].map((x, y) => (
         <circle
           cx={getRandomX()}
           cy={getRandomY()}
@@ -59,7 +61,7 @@ function App() {
         />
       ))
     )
-  }, [viewportSize, getRandomX, getRandomY, randomRadius])
+  }, [viewportSize, getRandomX, getRandomY, randomRadius, chaos])
 
   useEffect(() => {
     if (destinationCoordinates[0] && destinationCoordinates[1]) {
@@ -98,7 +100,7 @@ function App() {
           About
         </button>
       </div>
-
+      <Chaos chaosValues={chaos} onClickHandler={setChaos} />
       {isModalVisible && (
         <div className="absolute left-1/4 top-1/3 flex h-2/6 w-3/6 flex-col  items-center  rounded-lg bg-black/45 p-4 text-xl  text-white backdrop-blur-sm">
           {selectedPlanet ? (
